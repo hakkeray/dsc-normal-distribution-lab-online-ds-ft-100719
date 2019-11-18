@@ -30,8 +30,20 @@ Here,
 
 ```python
 # Generate a random normal variable with given parameters , n=5000
-
+import numpy as np
+mu, sigma = 14, 2.8
+n = 5000
+s = np.random.normal(mu, sigma, n)
+s
 ```
+
+
+
+
+    array([15.76518132, 11.379243  , 15.16284558, ..., 15.92455224,
+           12.14787023, 16.22206377])
+
+
 
 ## Calculate a normalized histogram for this distribution in matplotlib, with bin size = 20
 
@@ -40,11 +52,36 @@ Make sure to get the bin positions and counts for each of the obtained bins. You
 
 ```python
 # Calculate a histogram for above data distribution
+# basic version
+import matplotlib.pyplot as plt
+plt.style.use('ggplot')
+
+plt.hist(s, bins=20, density=True, alpha=0.7);
+```
+
+
+![png](output_6_0.png)
+
+
+
+```python
+# slightly more ADVANCED version
+
+
+plt.hist(s, 20, density=True, facecolor='g', alpha=0.5)
+
+plt.xlabel('5000 Random Values')
+plt.ylabel('Probability')
+plt.title('Normal Dist Histogram')
+plt.text(2, .05, r'$\mu=14,\ \sigma=2.8$')
+plt.xlim(0, 26)
+plt.ylim(0, 0.15)
+plt.grid(True)
 
 ```
 
 
-![png](index_files/index_6_0.png)
+![png](output_7_0.png)
 
 
 ## Use the formula to calculate the density function with $\mu$, $\sigma$ and bin information obtained before
@@ -52,8 +89,23 @@ Make sure to get the bin positions and counts for each of the obtained bins. You
 
 ```python
 # Calculate the normal Density function 
-density = None
+
+bins = 20 #bins
+
+pi = 3.14159 
+e = 2.71828
+
+
+d = 1/(sigma*np.sqrt(2*pi)) * np.exp(- (bins - mu)**2 / (2*sigma**2))
+d
 ```
+
+
+
+
+    0.01434324907222163
+
+
 
 ## Plot the histogram and density function
 
@@ -61,10 +113,13 @@ density = None
 ```python
 # Plot histogram along with the density function
 
+plt.hist(s, 20, density=True)
+plt.plot(bins, d)
+plt.show()
 ```
 
 
-![png](index_files/index_10_0.png)
+![png](output_11_0.png)
 
 
 ## Visualize the distribution using seaborn and plot the KDE
@@ -72,18 +127,14 @@ density = None
 
 ```python
 # Use seaborn to plot the histogram with KDE
-
+import seaborn as sns
+sns.distplot(s, bins=20, kde=True)
+plt.title('Seaborn Distplot')
+plt.show()
 ```
 
 
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x1a121adac8>
-
-
-
-
-![png](index_files/index_12_1.png)
+![png](output_13_0.png)
 
 
 ## Summary
